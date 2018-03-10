@@ -23,8 +23,6 @@ object OnPost {
             try {
                 val event = Deserializer(text).deserialize()
 
-                LOGGER.info("上报事件：${event.javaClass.simpleName}\n")
-
                 val response = when (event) {
                     is MessageEvent -> bot.onMessage(event) // 调用 bot 的 onMessage 方法
                     else -> throw Exception("Unknown event")
