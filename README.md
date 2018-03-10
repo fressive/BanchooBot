@@ -9,4 +9,12 @@ N次重构后的BanchooBot
 - `/bot-frame`    Bot 框架
 
 ## 编译
-~~我也不知道怎么编译~~
+```bash
+cd http-server
+mvn clean compile install
+cd ..
+cd bot-frame
+mvn clean compile install
+cd ..
+mvn clean compile install
+```
