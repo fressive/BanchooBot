@@ -1,7 +1,6 @@
 package org.banchoobot.functions
 
-import org.banchoobot.frame.deserializer.events.MessageEvent
-import org.banchoobot.frame.entities.MessageReply
+import org.banchoobot.frame.deserializer.events.Message
 import org.banchoobot.functions.annotations.CommandFunction
 import org.banchoobot.functions.interfaces.ICommandFunction
 
@@ -16,8 +15,8 @@ import org.banchoobot.functions.interfaces.ICommandFunction
  */
 @CommandFunction(command = "roll")
 class Roll : ICommandFunction {
-    override fun onCommand(event: MessageEvent): MessageReply {
+    override fun onCommand(event: Message) {
         println("Invoke success!!!")
-        return MessageReply("Reserved.")
+        event.reply("Reserved.")
     }
 }

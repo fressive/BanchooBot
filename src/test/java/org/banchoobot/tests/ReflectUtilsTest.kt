@@ -1,6 +1,5 @@
 package org.banchoobot.tests
 
-import org.banchoobot.frame.deserializer.events.PrivateMessageEvent
 import org.banchoobot.functions.annotations.CommandFunction
 import org.banchoobot.functions.interfaces.ICommandFunction
 import org.banchoobot.utils.ReflectUtils
@@ -20,7 +19,8 @@ class ReflectUtilsTest {
 
             c.methods.forEach {
                 if (it.name == "onCommand")
-                    it.invoke(c.newInstance(), PrivateMessageEvent("!roll", 1004121460))
+                    // it.invoke(c.newInstance(), PrivateMessage("!roll", 1004121460))
+                    TODO()
             }
             ats.forEach { println("${it.command} for ${c.simpleName}") }
         }

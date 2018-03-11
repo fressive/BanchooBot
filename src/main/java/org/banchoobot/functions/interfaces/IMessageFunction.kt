@@ -1,11 +1,10 @@
 package org.banchoobot.functions.interfaces
 
-import org.banchoobot.frame.deserializer.events.MessageEvent
-import org.banchoobot.frame.entities.MessageReply
+import org.banchoobot.frame.deserializer.events.Message
 
 /**
  * 消息功能
  */
 interface IMessageFunction {
-    fun onMessage(event: MessageEvent): MessageReply
+    fun onMessage(event: Message)
 }

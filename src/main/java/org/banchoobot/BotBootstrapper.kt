@@ -24,9 +24,12 @@ object BotBootstrapper {
     fun main(args: Array<String>) {
         println(MOTD.trimMargin("."))
 
-        val bot = BanchooBot(BotConfig(anotherConfigs = mutableMapOf("prefix" to "!")))
+        val bot = BanchooBot(BotConfig(anotherConfigs = mutableMapOf("prefix" to "+")))
         bot.start()
 
-        LOGGER.info("已启动 BanchooBot 。")
+        LOGGER.info("已启动 BanchooBot。\n")
+        LOGGER.info("CommandFunctions: ${bot.commandFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("MessageFunctions: ${bot.messageFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("EventFunctions: ${bot.eventFunctions.joinToString { it.clazz.simpleName } }\n")
     }
 }

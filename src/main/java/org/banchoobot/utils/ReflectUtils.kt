@@ -1,9 +1,11 @@
 package org.banchoobot.utils
 
-import org.banchoobot.frame.deserializer.events.PrivateMessageEvent
 import org.banchoobot.functions.annotations.CommandFunction
+import org.banchoobot.functions.annotations.EventFunction
 import org.banchoobot.functions.annotations.MessageFunction
+import org.banchoobot.functions.entities.EFunction
 import org.banchoobot.functions.interfaces.ICommandFunction
+import org.banchoobot.functions.interfaces.IEventFunction
 import org.banchoobot.functions.interfaces.IMessageFunction
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -22,27 +24,34 @@ object ReflectUtils {
         return reflections.getSubTypesOf(interfaze)
     }
 
-    fun getCommandFunctions(): Set<Class<*>> {
-        val set = mutableSetOf<Class<*>>()
+    fun getCommandFunctions(): Set<EFunction<CommandFunction, *>> {
+        val set = mutableSetOf<EFunction<CommandFunction, *>>()
         getImplementClasses(ICommandFunction::class.java).forEach { c ->
             val ats = c.getAnnotationsByType(CommandFunction::class.java)
-            if (ats.count() < 1) {
-                return@forEach
-            }
-            set.add(c)
+            if (ats.count() < 1 || ats[0].disabled) return@forEach
+            set.add(EFunction(ats[0], c))
         }
 
         return set
     }
 
-    fun getMessageFunctions(): Set<Class<*>> {
-        val set = mutableSetOf<Class<*>>()
+    fun getMessageFunctions(): Set<EFunction<MessageFunction, *>> {
+        val set = mutableSetOf<EFunction<MessageFunction, *>>()
         getImplementClasses(IMessageFunction::class.java).forEach { c ->
             val ats = c.getAnnotationsByType(MessageFunction::class.java)
-            if (ats.count() < 1) {
-                return@forEach
-            }
-            set.add(c)
+            if (ats.count() < 1 || ats[0].disabled) return@forEach
+            set.add(EFunction(ats[0], c))
+        }
+
+        return set
+    }
+
+    fun getEventFunctions(): Set<EFunction<EventFunction, *>> {
+        val set = mutableSetOf<EFunction<EventFunction, *>>()
+        getImplementClasses(IEventFunction::class.java).forEach { c ->
+            val ats = c.getAnnotationsByType(EventFunction::class.java)
+            if (ats.count() < 1 || ats[0].disabled) return@forEach
+            set.add(EFunction(ats[0], c))
         }
 
         return set

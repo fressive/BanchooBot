@@ -12,18 +12,20 @@ object BotUtils {
     /**
      * 发送私聊消息
      *
-     * @param qq 接受者的 QQ号
+     * @param qq 接受者的QQ号
      * @param text 要发送的信息
      * @param isEscape 是否不转义
      * @param isAsync 是否使用异步发送
+     *
+     * @return 消息ID
      */
     fun sendPrivateMessage(qq: Long,
                            text: String,
                            isEscape: Boolean = false,
-                           isAsync: Boolean = true) {
+                           isAsync: Boolean = true): Long {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_PRIVATE_MESSAGE_ASYNC.url else PostApis.SEND_PRIVATE_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("user_id" to qq, "message" to text, "auto_escape" to isEscape))
-        HttpUtils.post(url, json)
+        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
     }
 
     /**
@@ -33,14 +35,35 @@ object BotUtils {
      * @param text 要发送的信息
      * @param isEscape 是否不转义
      * @param isAsync 是否使用异步发送
+     *
+     * @return 消息ID
      */
     fun sendGroupMessage(qq: Long,
                            text: String,
                            isEscape: Boolean = false,
-                           isAsync: Boolean = true) {
+                           isAsync: Boolean = true): Long {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_GROUP_MESSAGE_ASYNC.url else PostApis.SEND_GROUP_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("group_id" to qq, "message" to text, "auto_escape" to isEscape))
-        HttpUtils.post(url, json)
+        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
+    }
+
+    /**
+     * 发送讨论组信息
+     *
+     * @param qq 接受的讨论组的 ID
+     * @param text 要发送的信息
+     * @param isEscape 是否不转义
+     * @param isAsync 是否使用异步发送
+     *
+     * @return 消息ID
+     */
+    fun sendDiscussMessage(qq: Long,
+                         text: String,
+                         isEscape: Boolean = false,
+                         isAsync: Boolean = true): Long {
+        val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_DISCUSS_MESSAGE_ASYNC.url else PostApis.SEND_DISCUSS_MESSAGE.url }"
+        val json = JSON.toJSONString(mapOf("discuss_id" to qq, "message" to text, "auto_escape" to isEscape))
+        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
     }
 
     /**
