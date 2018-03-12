@@ -6,6 +6,9 @@ import org.banchoobot.frame.deserializer.events.Event
 import org.banchoobot.frame.deserializer.events.Message
 import org.banchoobot.functions.annotations.*
 import org.banchoobot.functions.entities.EFunction
+import org.banchoobot.functions.interfaces.ICommandFunction
+import org.banchoobot.functions.interfaces.IEventFunction
+import org.banchoobot.functions.interfaces.IMessageFunction
 import org.banchoobot.utils.ReflectUtils
 import java.util.logging.Logger
 
@@ -15,9 +18,14 @@ import java.util.logging.Logger
 class BanchooBot(private val config: BotConfig) : Bot(config) {
     private val LOGGER = Logger.getLogger(this::class.java.simpleName)
 
-    val commandFunctions: Set<EFunction<CommandFunction, *>> = ReflectUtils.getCommandFunctions()
-    val messageFunctions: Set<EFunction<MessageFunction, *>> = ReflectUtils.getMessageFunctions()
-    val eventFunctions: Set<EFunction<EventFunction, *>> = ReflectUtils.getEventFunctions()
+    val commandFunctions: Set<EFunction<CommandFunction, ICommandFunction>>
+            = ReflectUtils.getFunctions({ !it.disabled })
+
+    val messageFunctions: Set<EFunction<MessageFunction, IMessageFunction>>
+            = ReflectUtils.getFunctions({ !it.disabled })
+
+    val eventFunctions: Set<EFunction<EventFunction, IEventFunction>>
+            = ReflectUtils.getFunctions({ !it.disabled })
 
     override fun onMessage(message: Message) {
         val type = AllowedMethods.valueOf(message.messageType.toUpperCase())

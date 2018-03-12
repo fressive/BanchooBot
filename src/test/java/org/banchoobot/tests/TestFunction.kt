@@ -1,4 +1,4 @@
-package org.banchoobot.functions
+package org.banchoobot.tests
 
 import org.banchoobot.frame.deserializer.events.Event
 import org.banchoobot.frame.deserializer.events.FileUploadEvent
@@ -14,7 +14,7 @@ import org.banchoobot.functions.interfaces.IEventFunction
  */
 @CommandFunction(command = "upload", disabled = true)
 @EventFunction(allowedEvent = AllowedEvents.GROUP_UPLOAD, disabled = true)
-class OnFileUpload : IEventFunction, ICommandFunction {
+class TestFunction : IEventFunction, ICommandFunction {
 
     override fun onCommand(event: Message) {
         println("Test OK")
