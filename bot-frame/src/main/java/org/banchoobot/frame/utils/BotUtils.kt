@@ -1,6 +1,7 @@
 package org.banchoobot.frame.utils
 
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import org.banchoobot.frame.configs.PublicConfig
 import org.banchoobot.frame.globals.PostApis
 
@@ -39,9 +40,9 @@ object BotUtils {
      * @return 消息ID
      */
     fun sendGroupMessage(qq: Long,
-                           text: String,
-                           isEscape: Boolean = false,
-                           isAsync: Boolean = true): Long {
+                         text: String,
+                         isEscape: Boolean = false,
+                         isAsync: Boolean = true): Long {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_GROUP_MESSAGE_ASYNC.url else PostApis.SEND_GROUP_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("group_id" to qq, "message" to text, "auto_escape" to isEscape))
         return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
@@ -58,14 +59,30 @@ object BotUtils {
      * @return 消息ID
      */
     fun sendDiscussMessage(qq: Long,
-                         text: String,
-                         isEscape: Boolean = false,
-                         isAsync: Boolean = true): Long {
+                           text: String,
+                           isEscape: Boolean = false,
+                           isAsync: Boolean = true): Long {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_DISCUSS_MESSAGE_ASYNC.url else PostApis.SEND_DISCUSS_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("discuss_id" to qq, "message" to text, "auto_escape" to isEscape))
         return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
     }
 
+    /**
+     * 获取群成员信息
+     *
+     * @param qq 接受的讨论组的 ID
+     * @param group 群号
+     * @param cache 是否缓存
+     *
+     * @return obj
+     */
+    fun getGroupMemberInfo(qq: Long,
+                           group: Long,
+                           cache: Boolean = false): JSONObject {
+        val url = "${PublicConfig.apiUrl}${PostApis.GET_GROUP_MEMBER_INFO.url}"
+        val json = JSON.toJSONString(mapOf("user_id" to qq, "group_id" to group, "no_cache" to cache))
+        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string())
+    }
     /**
      * 获取图片的 CQ 码（使用url）
      *

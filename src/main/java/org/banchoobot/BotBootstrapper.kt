@@ -1,7 +1,9 @@
 package org.banchoobot
 
+import com.alibaba.fastjson.JSON
 import org.banchoobot.frame.configs.BotConfig
 import org.banchoobot.functions.schedulers.Scheduler
+import org.banchoobot.utils.ConfigUtils
 import java.util.logging.Logger
 
 /**
@@ -21,20 +23,24 @@ object BotBootstrapper {
                             .
                        """
 
+    var bot: BanchooBot? = null
+
     @JvmStatic
     fun main(args: Array<String>) {
         println(MOTD.trimMargin("."))
 
+        val config = ConfigUtils.readConfig()
+        LOGGER.info("Config: ${JSON.toJSONString(config)}\n")
 
-        val bot = BanchooBot(BotConfig(anotherConfigs = mutableMapOf("prefix" to "+")))
-        bot.start()
+        bot = BanchooBot(config)
+        bot!!.start()
 
         Scheduler.init()
 
         LOGGER.info("已启动 BanchooBot。\n")
-        LOGGER.info("CommandFunctions: ${bot.commandFunctions.joinToString { it.clazz.simpleName } }\n")
-        LOGGER.info("MessageFunctions: ${bot.messageFunctions.joinToString { it.clazz.simpleName } }\n")
-        LOGGER.info("EventFunctions: ${bot.eventFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("CommandFunctions: ${bot!!.commandFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("MessageFunctions: ${bot!!.messageFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("EventFunctions: ${bot!!.eventFunctions.joinToString { it.clazz.simpleName } }\n")
         LOGGER.info("ScheduleFunctions: ${Scheduler.names.joinToString { it } }\n")
     }
 }

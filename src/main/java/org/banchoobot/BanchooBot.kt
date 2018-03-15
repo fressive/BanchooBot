@@ -1,22 +1,26 @@
 package org.banchoobot
 
+import com.alibaba.fastjson.JSONArray
 import org.banchoobot.frame.Bot
 import org.banchoobot.frame.configs.BotConfig
 import org.banchoobot.frame.deserializer.events.Event
+import org.banchoobot.frame.deserializer.events.GroupMessage
 import org.banchoobot.frame.deserializer.events.Message
+import org.banchoobot.frame.utils.BotUtils
 import org.banchoobot.functions.annotations.*
 import org.banchoobot.functions.entities.EFunction
 import org.banchoobot.functions.interfaces.ICommandFunction
 import org.banchoobot.functions.interfaces.IEventFunction
 import org.banchoobot.functions.interfaces.IMessageFunction
+import org.banchoobot.utils.ConfigUtils
 import org.banchoobot.utils.ReflectUtils
 import java.util.logging.Logger
 
 /**
  * BanchooBot
  */
-class BanchooBot(private val config: BotConfig) : Bot(config) {
-    private val LOGGER = Logger.getLogger(this::class.java.simpleName)
+class BanchooBot(val config: BotConfig) : Bot(config) {
+    val LOGGER = Logger.getLogger(this::class.java.simpleName)
 
     val commandFunctions: Set<EFunction<CommandFunction, ICommandFunction>>
             = ReflectUtils.getFunctions({ !it.disabled })
@@ -35,8 +39,11 @@ class BanchooBot(private val config: BotConfig) : Bot(config) {
             m.clazz.methods
                     .filter { it.name == "onMessage" }
                     .forEach {
+                        val p = when (message) { is GroupMessage -> getUserPermission(message.userID, message.groupID); else -> getUserPermission(message.userID)}
+
                         if (m.annotation.allowedMethods.contains(type))
-                            it.invoke(m.clazz.newInstance(), message)
+                            if (p >= m.annotation.needPermission)
+                                it.invoke(m.clazz.newInstance(), message)
                     }
         }
 
@@ -46,9 +53,17 @@ class BanchooBot(private val config: BotConfig) : Bot(config) {
                     .forEach {
                         val ant = m.annotation
                         if (ant.allowedMethods.contains(type)) {
-                            val cmd = message.message.split(" ")[0].substring(config.anotherConfigs["prefix"].toString().length)
-                            if (cmd == ant.command)
-                                it.invoke(m.clazz.newInstance(), message)
+
+                            val p = when (message) { is GroupMessage -> getUserPermission(message.userID, message.groupID); else -> getUserPermission(message.userID) }
+
+                            if (message.message.startsWith(config.anotherConfigs["prefix"].toString())) {
+                                val cmd = message.message.split(" ")[0].substring(config.anotherConfigs["prefix"].toString().length)
+                                if (ant.command.contains(cmd))
+                                    if (p >= ant.needPermission)
+                                        it.invoke(m.clazz.newInstance(), message)
+                                    else
+                                        message.reply("You need a higher permission to use this function.")
+                            }
                         }
                     }
         }
@@ -69,6 +84,36 @@ class BanchooBot(private val config: BotConfig) : Bot(config) {
                         }
                     }
         }
+    }
+
+    fun getUserPermission(qq: Long, group: Long = -1L): UserPermissions {
+        val botAdmins = config.anotherConfigs["bot_admins"]
+
+        try {
+            if (botAdmins != null) {
+                if (botAdmins is JSONArray) {
+                    botAdmins.forEach {
+                        if ((it as Int).toLong() == qq) return UserPermissions.BOT_ADMIN
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return if (group == -1L) {
+            UserPermissions.NORMAL
+        } else {
+            val role = BotUtils.getGroupMemberInfo(qq, group).getJSONObject("data").getString("role")
+            when (role) {
+                "owner", "admin" -> UserPermissions.ADMIN
+                else -> UserPermissions.NORMAL
+            }
+        }
+    }
+
+    fun saveConfig(path: String = "./config/bot.json") {
+        ConfigUtils.saveConfig(this.config, path)
     }
 
 }

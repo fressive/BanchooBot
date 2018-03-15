@@ -6,5 +6,6 @@ package org.banchoobot.functions.annotations
 @Target(AnnotationTarget.CLASS)
 annotation class EventFunction (
         val allowedEvent: AllowedEvents,
+        val needPermission: UserPermissions = UserPermissions.NORMAL,
         val disabled: Boolean = false
 )

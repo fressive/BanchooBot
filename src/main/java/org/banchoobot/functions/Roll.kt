@@ -13,10 +13,9 @@ import org.banchoobot.functions.interfaces.ICommandFunction
  * roll {min}-{max}     返回 {min} - {max} 随机整数
  * roll {list}          返回 {list} 内随机一个元素
  */
-@CommandFunction(command = "roll")
+@CommandFunction(command = ["roll"])
 class Roll : ICommandFunction {
     override fun onCommand(event: Message) {
-        println("Invoke success!!!")
         event.reply("Reserved.")
     }
 }
