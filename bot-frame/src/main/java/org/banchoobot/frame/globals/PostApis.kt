@@ -10,5 +10,9 @@ enum class PostApis(val url: String) {
     SEND_GROUP_MESSAGE_ASYNC("/send_group_msg_async"),
     SEND_DISCUSS_MESSAGE("/send_discuss_msg"),
     SEND_DISCUSS_MESSAGE_ASYNC("/send_discuss_msg_async"),
+    DELETE_MESSAGE("/delete_msg"),
+    SEND_LIKE("/send_like"),
+    GROUP_KICK("/set_group_kick"),
+    GROUP_BAN("/set_group_ban"),
     GET_GROUP_MEMBER_INFO("/get_group_member_info")
 }

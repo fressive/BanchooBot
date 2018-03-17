@@ -23,10 +23,10 @@ object BotUtils {
     fun sendPrivateMessage(qq: Long,
                            text: String,
                            isEscape: Boolean = false,
-                           isAsync: Boolean = true): Long {
+                           isAsync: Boolean = true) {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_PRIVATE_MESSAGE_ASYNC.url else PostApis.SEND_PRIVATE_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("user_id" to qq, "message" to text, "auto_escape" to isEscape))
-        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
+        HttpUtils.post(url, json)
     }
 
     /**
@@ -36,16 +36,14 @@ object BotUtils {
      * @param text 要发送的信息
      * @param isEscape 是否不转义
      * @param isAsync 是否使用异步发送
-     *
-     * @return 消息ID
      */
     fun sendGroupMessage(qq: Long,
                          text: String,
                          isEscape: Boolean = false,
-                         isAsync: Boolean = true): Long {
+                         isAsync: Boolean = true) {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_GROUP_MESSAGE_ASYNC.url else PostApis.SEND_GROUP_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("group_id" to qq, "message" to text, "auto_escape" to isEscape))
-        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
+        HttpUtils.post(url, json)
     }
 
     /**
@@ -61,12 +59,50 @@ object BotUtils {
     fun sendDiscussMessage(qq: Long,
                            text: String,
                            isEscape: Boolean = false,
-                           isAsync: Boolean = true): Long {
+                           isAsync: Boolean = true) {
         val url = "${PublicConfig.apiUrl}${ if(isAsync) PostApis.SEND_DISCUSS_MESSAGE_ASYNC.url else PostApis.SEND_DISCUSS_MESSAGE.url }"
         val json = JSON.toJSONString(mapOf("discuss_id" to qq, "message" to text, "auto_escape" to isEscape))
-        return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string()).getLong("message_id")
+        HttpUtils.post(url, json)
     }
 
+    /**
+     * 撤回消息
+     *
+     * @param msgID 消息ID
+     */
+    fun deleteMessage(msgID: Long) {
+        val url = "${PublicConfig.apiUrl}${ PostApis.DELETE_MESSAGE }"
+        val json = JSON.toJSONString(mapOf("message_id" to msgID))
+        HttpUtils.post(url, json)
+    }
+
+    /**
+     * 发送赞
+     *
+     * @param user 用户 QQ
+     * @param times 发送赞的次数，每天最多 10 次
+     */
+    fun sendLike(user: Long,
+                 times: Short = 1) {
+        val url = "${PublicConfig.apiUrl}${ PostApis.SEND_LIKE }"
+        val json = JSON.toJSONString(mapOf("user_id" to user, "times" to times))
+        HttpUtils.post(url, json)
+    }
+
+    /**
+     * 群组踢人
+     *
+     * @param group 群
+     * @param user 用户
+     * @param isRejectRequest 是否拒绝加群请求
+     */
+    fun groupKick(group: Long,
+                  user: Long,
+                  isRejectRequest: Boolean = false) {
+        val url = "${PublicConfig.apiUrl}${ PostApis.GROUP_KICK }"
+        val json = JSON.toJSONString(mapOf("group_id" to group, "user_id" to user, "reject_add_request" to isRejectRequest))
+        HttpUtils.post(url, json)
+    }
     /**
      * 获取群成员信息
      *
@@ -83,6 +119,17 @@ object BotUtils {
         val json = JSON.toJSONString(mapOf("user_id" to qq, "group_id" to group, "no_cache" to cache))
         return JSON.parseObject(HttpUtils.post(url, json)?.body()?.string())
     }
+
+    /**
+     * 获取@的 CQ 码
+     *
+     * @param qq 被@的人的 QQ
+     *
+     * @return CQ码
+     */
+    fun getAt(qq: Long): String
+            = "[CQ:at,qq=$qq]"
+
     /**
      * 获取图片的 CQ 码（使用url）
      *
@@ -98,6 +145,8 @@ object BotUtils {
      * 获取图片的 CQ 码（使用 Base64）
      *
      * @param base64 base64
+     *
+     * @return CQ码
      */
     fun getImageWithBase64(base64: String): String
             = "[CQ:image,file=base64://$base64]"

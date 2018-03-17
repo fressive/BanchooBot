@@ -16,5 +16,5 @@ abstract class Message (
         open val userID: Long,
         override val time: Long
 ) : PostEvent("message", time) {
-    abstract fun reply(msg: String, isEscape: Boolean = false, isAsync: Boolean = true): Long
+    abstract fun reply(msg: String, isEscape: Boolean = false, isAsync: Boolean = true)
 }

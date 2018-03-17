@@ -4,11 +4,12 @@
 N次重构后的BanchooBot
 
 ## Modules
-| Module | Description |
-| - | :-: |
-| `/` | BanchooBot 主体 |
-| `/http-server` | Http 服务器 |
-| `/bot-frame` | Bot 框架 |
+
+| Module         | Description        |
+| -              | :-:                |
+| `/`            | BanchooBot 主体     |
+| `/http-server` | Http 服务器         |
+| `/bot-frame`   | Bot 框架            |
 
 ## Compiling
 ```bash

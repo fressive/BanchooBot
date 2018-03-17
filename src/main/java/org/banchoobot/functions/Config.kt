@@ -15,9 +15,13 @@ class Config {
     class SetConfig : ICommandFunction {
         override fun onCommand(event: Message) {
             val msg = event.message.split(" ")
-            BotBootstrapper.bot?.config?.anotherConfigs?.put(msg[1], msg[2])
-            BotBootstrapper.bot?.saveConfig()
-            event.reply("Set config ('${msg[1]}' : '${msg[2]}').")
+            if (msg.size > 2) {
+                BotBootstrapper.bot?.config?.anotherConfigs?.put(msg[1], msg[2])
+                BotBootstrapper.bot?.saveConfig()
+                event.reply("Set config ('${msg[1]}' : '${msg[2]}').")
+            } else {
+                event.reply("Please input params.")
+            }
         }
     }
 
@@ -25,9 +29,33 @@ class Config {
     class DelConfig : ICommandFunction {
         override fun onCommand(event: Message) {
             val msg = event.message.split(" ")
-            BotBootstrapper.bot?.config?.anotherConfigs?.remove(msg[1])
-            BotBootstrapper.bot?.saveConfig()
-            event.reply("Remove config ('${msg[1]}').")
+            if (msg.size > 1) {
+                if (BotBootstrapper.bot?.config?.anotherConfigs?.containsKey(msg[1]) == true) {
+                    BotBootstrapper.bot?.config?.anotherConfigs?.remove(msg[1])
+                    BotBootstrapper.bot?.saveConfig()
+                    event.reply("Remove config ('${msg[1]}').")
+                } else {
+                    event.reply("Config ('${msg[1]}') not found.")
+                }
+            } else {
+                event.reply("Please input params.")
+            }
+        }
+    }
+
+    @CommandFunction(command = ["viewconf", "viewconfig", "vc"], needPermission = UserPermissions.ADMIN)
+    class ViewConfig : ICommandFunction {
+        override fun onCommand(event: Message) {
+            val msg = event.message.split(" ")
+            if (msg.size > 1) {
+                if (BotBootstrapper.bot?.config?.anotherConfigs?.containsKey(msg[1]) == true) {
+                    event.reply("Value for ('${msg[1]}'): '${BotBootstrapper.bot?.config?.anotherConfigs?.get(msg[1])}'.")
+                } else {
+                    event.reply("Config ('${msg[1]}') not found.")
+                }
+            } else {
+                event.reply("Please input params.")
+            }
         }
     }
 }

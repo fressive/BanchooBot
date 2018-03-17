@@ -74,7 +74,7 @@ object HttpUtils {
     private fun buildUrl(url: String, params: Map<String, Any>? = null): String {
         params ?: return url
 
-        var realUrl = "$url${if("?" in url) "?" else ""}"
+        var realUrl = "$url?"
 
         params.forEach { k, v ->
             realUrl += "$k=${URLEncoder.encode(v.toString(), "utf-8")}&"
