@@ -18,7 +18,7 @@ mvn clean compile install
 cd ../bot-frame
 mvn clean compile install
 cd ..
-mvn clean compile install
+mvn clean compile package
 ```
 
 ## License

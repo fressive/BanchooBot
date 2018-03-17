@@ -13,7 +13,7 @@ data class QQUserData(
 data class Data(
 		@JSONField(name = "userId") val userId: Int,
 		@JSONField(name = "role") val role: String,
-		@JSONField(name = "qq") val qq: Int,
+		@JSONField(name = "qq") val qq: Long,
 		@JSONField(name = "legacyUname") val legacyUname: String,
 		@JSONField(name = "currentUname") val currentUname: String,
 		@JSONField(name = "banned") val banned: Boolean,
