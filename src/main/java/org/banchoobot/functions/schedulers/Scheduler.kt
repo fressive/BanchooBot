@@ -1,5 +1,6 @@
 package org.banchoobot.functions.schedulers
 
+import org.banchoobot.BotBootstrapper
 import org.banchoobot.functions.annotations.ScheduleFunction
 import org.banchoobot.utils.ReflectUtils
 import org.quartz.*
@@ -14,7 +15,7 @@ object Scheduler {
     val names: MutableList<String> = mutableListOf()
 
     fun init() {
-        ReflectUtils.getFunctions<ScheduleFunction, Job>({ !it.disabled }).forEach {
+        ReflectUtils.getFunctions<ScheduleFunction, Job>(BotBootstrapper.bot!!.pluginPackages, { !it.disabled }).forEach {
             val jobDetail = JobBuilder.newJob(it.clazz).withIdentity(it.annotation.name, "BaseGroup").build()
             val trigger = TriggerBuilder.newTrigger().withIdentity("${it.annotation.name}_trigger", "BaseGroup")
                     .startNow().withSchedule<CronTrigger>(CronScheduleBuilder.cronSchedule(it.annotation.cron)).build()

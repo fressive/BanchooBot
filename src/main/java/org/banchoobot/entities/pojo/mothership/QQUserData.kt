@@ -2,7 +2,7 @@ package org.banchoobot.entities.pojo.mothership
 import com.alibaba.fastjson.annotation.JSONField
 
 /**
- * QQ 绑定数据 POJO for MotherShip's API
+ * QQ 绑定数据 Bean for MotherShip's API
  */
 data class QQUserData(
 		@JSONField(name = "code") val code: Int,

@@ -13,6 +13,13 @@ enum class MotherShipApi(url: String) {
     GET_USER_INFO_NEAREST("/userinfo/nearest/{0}"),
 
     /**
+     * 获取一条记录
+     *
+     * @param {0} Uid
+     */
+    GET_USER_INFO("/userinfo/{0}"),
+
+    /**
      * 获取玩家 stat 图片
      *
      * @param {0} Uid

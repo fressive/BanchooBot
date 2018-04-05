@@ -7,9 +7,16 @@ import java.io.FileReader
 import java.io.FileWriter
 
 /**
- * 配置读取
+ * 配置读取工具类
  */
 object ConfigUtils {
+
+    /**
+     * 读取配置。
+     *
+     * @param path 路径
+     * @return 读取的配置
+     */
     fun readConfig(path: String = "./config/bot.json"): BotConfig {
         val file = File(path)
         if (!file.exists()) {
@@ -23,6 +30,12 @@ object ConfigUtils {
         return JSON.parseObject(FileReader(file).readText(), BotConfig::class.java)
     }
 
+    /**
+     * 保存配置。
+     *
+     * @param config 配置
+     * @param path 路径
+     */
     fun saveConfig(config: BotConfig, path: String = "./config/bot.json") {
         val file = File(path)
         if (file.exists()) {

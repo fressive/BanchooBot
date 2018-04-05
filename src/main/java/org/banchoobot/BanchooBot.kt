@@ -1,6 +1,8 @@
 package org.banchoobot
 
 import com.alibaba.fastjson.JSONArray
+import org.apache.ibatis.io.Resources
+import org.apache.ibatis.session.SqlSessionFactoryBuilder
 import org.banchoobot.frame.Bot
 import org.banchoobot.frame.configs.BotConfig
 import org.banchoobot.frame.deserializer.events.Event
@@ -12,25 +14,41 @@ import org.banchoobot.functions.entities.EFunction
 import org.banchoobot.functions.interfaces.ICommandFunction
 import org.banchoobot.functions.interfaces.IEventFunction
 import org.banchoobot.functions.interfaces.IMessageFunction
+import org.banchoobot.functions.schedulers.Scheduler
 import org.banchoobot.utils.ConfigUtils
 import org.banchoobot.utils.ReflectUtils
+import java.io.File
 import java.lang.reflect.InvocationTargetException
+import java.util.*
 import java.util.logging.Logger
 
 /**
- * BanchooBot
+ * BanchooBot's Body
  */
 class BanchooBot(@Volatile var config: BotConfig) : Bot(config) {
-    val LOGGER = Logger.getLogger(this::class.java.simpleName)
+    private val LOGGER = Logger.getLogger(this::class.java.simpleName)
 
-    val commandFunctions: Set<EFunction<CommandFunction, ICommandFunction>>
-            = ReflectUtils.getFunctions({ !it.disabled })
+    val pluginPackages: Set<String> by lazy {
+        val pluginFile = File("plugins")
+        if (!pluginFile.exists()) {
+            pluginFile.mkdirs()
+        }
 
-    val messageFunctions: Set<EFunction<MessageFunction, IMessageFunction>>
-            = ReflectUtils.getFunctions({ !it.disabled })
+        ReflectUtils.getPlugins()
+    }
 
-    val eventFunctions: Set<EFunction<EventFunction, IEventFunction>>
-            = ReflectUtils.getFunctions({ !it.disabled })
+    private val commandFunctions: Set<EFunction<CommandFunction, ICommandFunction>> by lazy { ReflectUtils.getFunctions<CommandFunction, ICommandFunction>(pluginPackages, { !it.disabled }) }
+    private val messageFunctions: Set<EFunction<MessageFunction, IMessageFunction>> by lazy { ReflectUtils.getFunctions<MessageFunction, IMessageFunction>(pluginPackages, { !it.disabled }) }
+    private val eventFunctions: Set<EFunction<EventFunction, IEventFunction>> by lazy { ReflectUtils.getFunctions<EventFunction, IEventFunction>(pluginPackages, { !it.disabled })  }
+
+    private val dbProperties = Properties().apply {
+        this["driver"] = "com.mysql.jdbc.Driver"
+        this["url"] = "jdbc:mysql://localhost:3306/banchoobot?useUnicode=true&characterEncoding=UTF-8"
+        this["username"] = config.anotherConfigs.getOrDefault("db_username", "root")
+        this["password"] = config.anotherConfigs.getOrDefault("db_password", "root")
+    }
+
+    val dbSessionFactory = SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("mybatis-config.xml"), dbProperties)!!
 
     override fun onMessage(message: Message) {
         val type = AllowedMethods.valueOf(message.messageType.toUpperCase())
@@ -53,20 +71,22 @@ class BanchooBot(@Volatile var config: BotConfig) : Bot(config) {
             commandFunctions.forEach { m ->
                 m.clazz.methods
                         .filter { it.name == "onCommand" }
-                        .forEach {
+                        .forEach { method ->
                             val ant = m.annotation
                             if (ant.allowedMethods.contains(type)) {
 
-                                val p = when (message) { is GroupMessage -> getUserPermission(message.userID, message.groupID); else -> getUserPermission(message.userID)
-                                }
+                                val p = when (message) { is GroupMessage -> getUserPermission(message.userID, message.groupID); else -> getUserPermission(message.userID) }
+
 
                                 if (message.message.startsWith(config.anotherConfigs["prefix"].toString())) {
-                                    val cmd = message.message.split(" ")[0].substring(config.anotherConfigs["prefix"].toString().length)
-                                    if (ant.command.contains(cmd))
-                                        if (p >= ant.needPermission)
-                                            it.invoke(m.clazz.newInstance(), message)
-                                        else
-                                            message.reply("You need a higher permission to use this function.")
+                                    ant.command.forEach {
+                                        if (message.message.startsWith(config.anotherConfigs["prefix"].toString() + it)) {
+                                            if (p >= ant.needPermission)
+                                                method.invoke(m.clazz.newInstance(), message)
+                                            else
+                                                message.reply("You need a higher permission to use this function.")
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -100,6 +120,26 @@ class BanchooBot(@Volatile var config: BotConfig) : Bot(config) {
         }
     }
 
+    override fun start() {
+        super.start()
+
+        Scheduler.init()
+
+        LOGGER.info("已启动 BanchooBot。\n")
+        LOGGER.info("CommandFunctions: ${BotBootstrapper.bot!!.commandFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("MessageFunctions: ${BotBootstrapper.bot!!.messageFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("EventFunctions: ${BotBootstrapper.bot!!.eventFunctions.joinToString { it.clazz.simpleName } }\n")
+        LOGGER.info("ScheduleFunctions: ${Scheduler.names.joinToString { it } }\n")
+
+
+    }
+
+    /**
+     * 获取用户的权限。
+     *
+     * @return 用户的权限
+     * @see UserPermissions
+     */
     fun getUserPermission(qq: Long, group: Long = -1L): UserPermissions {
         val botAdmins = config.anotherConfigs["bot_admins"]
 
@@ -126,6 +166,9 @@ class BanchooBot(@Volatile var config: BotConfig) : Bot(config) {
         }
     }
 
+    /**
+     * 保存当前配置文件。
+     */
     fun saveConfig(path: String = "./config/bot.json") {
         ConfigUtils.saveConfig(this.config, path)
     }

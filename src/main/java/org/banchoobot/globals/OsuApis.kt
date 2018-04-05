@@ -8,7 +8,11 @@ enum class OsuApis(url: String) {
     /**
      * 获取用户数据
      */
-    GET_USER("/api/get_user");
+    GET_USER("/api/get_user"),
+    /**
+     * 获取用户最近游玩历史
+     */
+    GET_USER_RECENT("/api/get_user_recent");
 
     private val ROOT_URL = "http://osu.ppy.sh"
 

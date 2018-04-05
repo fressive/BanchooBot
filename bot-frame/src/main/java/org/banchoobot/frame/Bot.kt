@@ -31,7 +31,7 @@ abstract class Bot(private val config: BotConfig) {
     /**
      * 启动 bot
      */
-    fun start() {
+    open fun start() {
         this.server = HttpServer()
                 .create(config.host, config.port)
                 .route("/", {

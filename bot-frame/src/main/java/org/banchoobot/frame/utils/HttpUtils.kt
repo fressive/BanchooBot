@@ -77,7 +77,7 @@ object HttpUtils {
         var realUrl = "$url?"
 
         params.forEach { k, v ->
-            realUrl += "$k=${URLEncoder.encode(v.toString(), "utf-8")}&"
+            realUrl += "$k=$v&"
         }
 
         return realUrl.trimEnd('&')

@@ -3,13 +3,13 @@ import com.alibaba.fastjson.annotation.JSONField
 
 
 /**
- * POJO for MotherShip's UserInfo API
+ * Bean for MotherShip's UserInfo API
  */
 
 data class UserInfo(
 		@JSONField(name = "code") val code: Int,
 		@JSONField(name = "status") val status: String,
-		@JSONField(name = "data") val data: UserInfoData
+		@JSONField(name = "data") val data: List<UserInfoData>
 )
 
 data class UserInfoData(
