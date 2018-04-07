@@ -1,8 +1,8 @@
 package org.banchoobot.functions
 
 import org.banchoobot.frame.deserializer.events.Message
-import org.banchoobot.functions.annotations.CommandFunction
-import org.banchoobot.functions.interfaces.ICommandFunction
+import org.banchoobot.sdk.annotations.CommandFunction
+import org.banchoobot.sdk.interfaces.ICommandFunction
 import java.util.*
 
 /**

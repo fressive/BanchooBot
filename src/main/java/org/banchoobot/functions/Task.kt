@@ -5,9 +5,9 @@ import org.banchoobot.entities.pojo.TaskBean
 import org.banchoobot.frame.deserializer.events.GroupMessage
 import org.banchoobot.frame.deserializer.events.Message
 import org.banchoobot.frame.utils.BotUtils
-import org.banchoobot.functions.annotations.CommandFunction
-import org.banchoobot.functions.annotations.ScheduleFunction
-import org.banchoobot.functions.interfaces.ICommandFunction
+import org.banchoobot.sdk.annotations.CommandFunction
+import org.banchoobot.sdk.annotations.ScheduleFunction
+import org.banchoobot.sdk.interfaces.ICommandFunction
 import org.banchoobot.utils.OsuUtils
 import org.quartz.Job
 import org.quartz.JobExecutionContext

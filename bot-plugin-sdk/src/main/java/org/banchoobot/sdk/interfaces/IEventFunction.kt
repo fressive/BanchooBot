@@ -1,4 +1,4 @@
-package org.banchoobot.functions.interfaces
+package org.banchoobot.sdk.interfaces
 
 import org.banchoobot.frame.deserializer.events.Event
 

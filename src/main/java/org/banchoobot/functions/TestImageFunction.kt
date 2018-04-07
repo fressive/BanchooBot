@@ -1,8 +1,8 @@
 package org.banchoobot.functions
 
 import org.banchoobot.frame.deserializer.events.Message
-import org.banchoobot.functions.annotations.MessageFunction
-import org.banchoobot.functions.interfaces.IMessageFunction
+import org.banchoobot.sdk.annotations.MessageFunction
+import org.banchoobot.sdk.interfaces.IMessageFunction
 
 /**
  * 测试图片功能

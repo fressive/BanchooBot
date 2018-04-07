@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON
 import org.banchoobot.frame.deserializer.events.Message
 import org.banchoobot.frame.utils.BotUtils
 import org.banchoobot.frame.utils.HttpUtils
-import org.banchoobot.functions.annotations.CommandFunction
-import org.banchoobot.functions.interfaces.ICommandFunction
+import org.banchoobot.sdk.annotations.CommandFunction
+import org.banchoobot.sdk.interfaces.ICommandFunction
 
 /**
  * Sorry，有钱真的了不起

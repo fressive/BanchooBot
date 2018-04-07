@@ -1,4 +1,4 @@
-package org.banchoobot.functions.entities
+package org.banchoobot.sdk.entities
 
 /**
  * 功能实体类

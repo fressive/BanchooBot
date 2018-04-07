@@ -1,7 +1,7 @@
 package org.banchoobot.functions.schedulers
 
 import org.banchoobot.BotBootstrapper
-import org.banchoobot.functions.annotations.ScheduleFunction
+import org.banchoobot.sdk.annotations.ScheduleFunction
 import org.banchoobot.utils.ReflectUtils
 import org.quartz.*
 import org.quartz.Scheduler

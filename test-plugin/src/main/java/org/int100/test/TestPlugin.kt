@@ -1,11 +1,11 @@
 package org.int100.test
 
 import org.banchoobot.frame.deserializer.events.Message
-import org.banchoobot.functions.Plugin
-import org.banchoobot.functions.annotations.CommandFunction
-import org.banchoobot.functions.entities.LoggerConfig
-import org.banchoobot.functions.interfaces.ICommandFunction
-import org.banchoobot.functions.utils.Logger
+import org.banchoobot.sdk.Plugin
+import org.banchoobot.sdk.annotations.CommandFunction
+import org.banchoobot.sdk.entities.LoggerConfig
+import org.banchoobot.sdk.interfaces.ICommandFunction
+import org.banchoobot.sdk.utils.Logger
 
 /**
  * A test plugin for Banchoobot.

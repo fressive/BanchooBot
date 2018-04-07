@@ -1,6 +1,6 @@
-package org.banchoobot.functions.utils
+package org.banchoobot.sdk.utils
 
-import org.banchoobot.functions.entities.LoggerConfig
+import org.banchoobot.sdk.entities.LoggerConfig
 import java.io.File
 
 /**

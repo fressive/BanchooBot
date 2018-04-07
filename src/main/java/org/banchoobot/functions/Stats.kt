@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONException
 import org.banchoobot.extensions.NumberExtensions.round
 import org.banchoobot.frame.deserializer.events.Message
 import org.banchoobot.frame.utils.BotUtils
-import org.banchoobot.functions.annotations.CommandFunction
-import org.banchoobot.functions.annotations.MessageFunction
-import org.banchoobot.functions.interfaces.ICommandFunction
-import org.banchoobot.functions.interfaces.IMessageFunction
+import org.banchoobot.sdk.annotations.CommandFunction
+import org.banchoobot.sdk.annotations.MessageFunction
+import org.banchoobot.sdk.interfaces.ICommandFunction
+import org.banchoobot.sdk.interfaces.IMessageFunction
 import org.banchoobot.utils.OsuUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,7 +42,7 @@ class Stats : ICommandFunction, IMessageFunction {
 
         val params = if (command.size == 1) { "${OsuUtils.MotherShip.getUserBindData(event.userID).data.userId}:STD" } else { command[1] }
 
-        val result = Stats.REGEX.find(params)
+        val result = REGEX.find(params)
         val user = OsuUtils.getUserID(result?.groups?.get(1)?.value ?: "")
         val mode = OsuUtils.getModeFromString(result?.groups?.get(2)?.value?.trim(' ', '\n', '\r') ?: "STD")
 
@@ -67,7 +67,7 @@ class Stats : ICommandFunction, IMessageFunction {
 
         val params = if (command.size == 1) { "${OsuUtils.MotherShip.getUserBindData(event.userID).data.userId}:STD" } else { command[1] }
 
-        val result = Stats.REGEX.find(params)
+        val result = REGEX.find(params)
         val user = OsuUtils.getUserID(result?.groups?.get(1)?.value ?: "")
         val mode = OsuUtils.getModeFromString(result?.groups?.get(2)?.value?.trim(' ', '\n', '\r') ?: "STD")
 

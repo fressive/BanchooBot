@@ -1,4 +1,4 @@
-package org.banchoobot.functions.utils
+package org.banchoobot.sdk.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

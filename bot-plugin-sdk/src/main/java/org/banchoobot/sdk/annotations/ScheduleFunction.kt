@@ -1,4 +1,4 @@
-package org.banchoobot.functions.annotations
+package org.banchoobot.sdk.annotations
 
 /**
  * 定时任务

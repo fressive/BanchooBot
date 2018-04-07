@@ -1,7 +1,7 @@
 package org.banchoobot.tests
 
-import org.banchoobot.functions.entities.LoggerConfig
-import org.banchoobot.functions.utils.Logger
+import org.banchoobot.sdk.entities.LoggerConfig
+import org.banchoobot.sdk.utils.Logger
 import org.junit.Test
 
 /**

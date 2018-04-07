@@ -1,4 +1,4 @@
-package org.banchoobot.functions
+package org.banchoobot.sdk
 
 /**
  * 插件基类，所有插件必须继承自此类

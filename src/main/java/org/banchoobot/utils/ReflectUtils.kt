@@ -1,7 +1,7 @@
 package org.banchoobot.utils
 
-import org.banchoobot.functions.Plugin
-import org.banchoobot.functions.entities.EFunction
+import org.banchoobot.sdk.Plugin
+import org.banchoobot.sdk.entities.EFunction
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import org.reflections.util.ClasspathHelper
