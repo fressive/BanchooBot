@@ -11,22 +11,23 @@ import org.banchoobot.frame.deserializer.events.Message
 import org.banchoobot.frame.utils.BotUtils
 import org.banchoobot.functions.annotations.*
 import org.banchoobot.functions.entities.EFunction
+import org.banchoobot.functions.entities.LoggerConfig
 import org.banchoobot.functions.interfaces.ICommandFunction
 import org.banchoobot.functions.interfaces.IEventFunction
 import org.banchoobot.functions.interfaces.IMessageFunction
 import org.banchoobot.functions.schedulers.Scheduler
+import org.banchoobot.functions.utils.Logger
 import org.banchoobot.utils.ConfigUtils
 import org.banchoobot.utils.ReflectUtils
 import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.util.*
-import java.util.logging.Logger
 
 /**
  * BanchooBot's Body
  */
 class BanchooBot(@Volatile var config: BotConfig) : Bot(config) {
-    private val LOGGER = Logger.getLogger(this::class.java.simpleName)
+    private val LOGGER = Logger(BanchooBot::class.java, LoggerConfig(BanchooBot::class.java, isWritingToFile = true))
 
     val pluginPackages: Set<String> by lazy {
         val pluginFile = File("plugins")
