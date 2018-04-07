@@ -1,6 +1,6 @@
 package org.banchoobot.utils
 
-import org.banchoobot.functions.Function
+import org.banchoobot.functions.Plugin
 import org.banchoobot.functions.entities.EFunction
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -98,9 +98,7 @@ object ReflectUtils {
 
             val `class` = pluginClassLoader.loadClass(ManifestParser.parse(jar.getInputStream(jar.getJarEntry("META-INF/MANIFEST.MF")).reader().readText())["Load-Class"])
 
-            if (`class`.newInstance() !is Function) {
-                return@forEach
-            }
+            if (`class`.isAssignableFrom(Plugin::class.java)) return@forEach
 
             pluginClassLoader.addJar(ClasspathHelper.forClass(`class`, pluginClassLoader))
 

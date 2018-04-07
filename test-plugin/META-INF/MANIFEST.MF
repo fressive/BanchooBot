@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Load-Class: org.int100.test.TestPlugin
