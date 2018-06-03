@@ -26,6 +26,7 @@ class Logger(private val loggerName: String, config: LoggerConfig) {
             .replace("#time", DateUtils.getFormatDate())
             .replace("#name", loggerName)
             .replace("#level", level.levelName)
+            .replace("#thread", Thread.currentThread().name)
             .replace("#message", message)
 
     fun log(text: Any, level: LogLevel)
@@ -54,5 +55,13 @@ class Logger(private val loggerName: String, config: LoggerConfig) {
 
     init {
         Logger.loggers[loggerName] = config
+
+        if (config.createNewFile) {
+            val file = File(config.logFilePath)
+            if (file.exists()) {
+                file.delete()
+                file.createNewFile()
+            }
+        }
     }
 }

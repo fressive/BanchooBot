@@ -16,7 +16,7 @@ object BotBootstrapper {
                             .          https://github.com/1004121460/BanchooBot
                             .          BanchooBot Project, All rights reserved.
                             .
-                       """
+                            """
 
     var bot: BanchooBot? = null
 

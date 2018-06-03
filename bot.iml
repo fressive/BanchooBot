@@ -29,7 +29,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="bot-frame" />
+    <orderEntry type="module" module-name="coolq-bot-frame" />
     <orderEntry type="module" module-name="http-server" />
     <orderEntry type="module" module-name="bot-plugin-sdk" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.1" level="project" />

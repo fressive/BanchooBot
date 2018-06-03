@@ -1,7 +1,7 @@
 package org.banchoobot.utils
 
 import com.alibaba.fastjson.JSON
-import org.banchoobot.frame.configs.BotConfig
+import org.banchoobot.frame.qq.configs.BotConfig
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter

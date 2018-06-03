@@ -5,23 +5,19 @@ N次重构后的BanchooBot
 
 ## Modules
 
-| Module              | Description        |
-| -                   | :-:                |
-| `/`                 | BanchooBot 主体     |
-| `/http-server`      | Http 服务器         |
-| `/bot-frame`        | Bot 框架            |
-| `/bot-plugin-sdk`   | Bot 插件开发 SDK    |
+| Module             | Description        |
+| --------           | :-----             |
+| `/`                | BanchooBot 主体     |
+| `/bot-plugin-sdk`  | Bot 插件开发 SDK    |
+| `/coolq-bot-frame` | 酷Q Bot 框架        |
+| `/http-server`     | Http 服务器         |
+
+
 
 ## Compiling
+### For Windows
 ```bash
-cd http-server
-mvn clean compile install
-cd ../bot-frame
-mvn clean compile install
-cd ../bot-plugin-sdk
-mvn clean compile install
-cd ..
-mvn clean compile package
+compile.bat
 ```
 
 ## License

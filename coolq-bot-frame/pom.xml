@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.banchoobot</groupId>
-    <artifactId>bot-plugin-sdk</artifactId>
+    <artifactId>coolq-bot-frame</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -15,19 +15,23 @@
     <dependencies>
         <dependency>
             <groupId>org.banchoobot</groupId>
-            <artifactId>coolq-bot-frame</artifactId>
+            <artifactId>http-server</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -57,7 +61,17 @@
                     <jvmTarget>1.8</jvmTarget>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
+
 
 </project>

@@ -1,6 +1,6 @@
 package org.banchoobot.sdk.interfaces
 
-import org.banchoobot.frame.deserializer.events.Message
+import org.banchoobot.frame.qq.deserializer.events.Message
 
 /**
  * 消息功能

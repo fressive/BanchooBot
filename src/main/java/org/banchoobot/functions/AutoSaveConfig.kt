@@ -2,7 +2,7 @@ package org.banchoobot.functions
 
 import org.banchoobot.BanchooBot
 import org.banchoobot.BotBootstrapper
-import org.banchoobot.frame.configs.BotConfig
+import org.banchoobot.frame.qq.configs.BotConfig
 import org.banchoobot.sdk.annotations.ScheduleFunction
 import org.banchoobot.sdk.entities.LoggerConfig
 import org.banchoobot.sdk.utils.Logger
